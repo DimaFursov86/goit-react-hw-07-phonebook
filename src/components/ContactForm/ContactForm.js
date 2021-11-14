@@ -1,14 +1,14 @@
 import { useState } from "react";
 import s from "./ContactForm.module.scss";
-import { useDispatch, useSelector } from "react-redux";
-import actions from "../../redux/app/app-actions";
-import { getVisibleContacts } from "../../redux/app/app-selectors";
+import {
+  useFetchContactsQuery,
+  useCreateContactMutation,
+} from "../../redux/app/contactSlice";
+import Loader from "../Loader/Loader";
 
 export default function Form({ onSubmit }) {
   const [name, setName] = useState("");
   const [number, setNumber] = useState("");
-
-  const dispatch = useDispatch();
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -26,16 +26,24 @@ export default function Form({ onSubmit }) {
         return;
     }
   };
-  const getVcontacts = useSelector(getVisibleContacts);
+  const { data: contacts } = useFetchContactsQuery();
+  const [createContact, { isLoading, isSuccess }] = useCreateContactMutation();
+
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    const existName = getVcontacts.map((obj) => obj.name);
-    if (existName.includes(name)) {
-      alert(`${name} is already in contacts`);
-    } else {
-      dispatch(actions.addContact({ name, number }));
+    const value = name;
+    if (contacts) {
+      const getVcontacts = contacts.filter(({ name }) =>
+        name.toLowerCase().includes(value.toLowerCase())
+      );
+      const existName = getVcontacts.map((obj) => obj.name);
+      if (existName.includes(value)) {
+        alert(`${value} is already in contacts`);
+      } else {
+        createContact(e.currentTarget.elements.name.value);
+      }
     }
+
     setName("");
     setNumber("");
   };
@@ -68,7 +76,8 @@ export default function Form({ onSubmit }) {
         />
       </label>
 
-      <button className={s.formButton} type="submit">
+      <button className={s.formButton} type="submit" disabled={isLoading}>
+        {isLoading && <Loader />}
         Add contact
       </button>
     </form>

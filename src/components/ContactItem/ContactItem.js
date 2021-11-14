@@ -2,18 +2,20 @@ import s from "./ContactItem.module.scss";
 import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
 import actions from "../../redux/app/app-actions";
+import { useDeleteContactMutation } from "../../redux/app/contactSlice";
 
-export default function ContactItem({ id, name, number }) {
-  const dispatch = useDispatch();
+export default function ContactItem({ id, name, phone }) {
+  // const dispatch = useDispatch();
+  const [deleteContact, { isLoading, isSuccess }] = useDeleteContactMutation();
 
   return (
     <div className={s.contactItem}>
       <p className={s.contactItemText}>{name}</p>
-      <p className={s.contactItemText}>{number}</p>
+      <p className={s.contactItemText}>{phone}</p>
       <button
         type="button"
         className={s.contactItemText}
-        onClick={() => dispatch(actions.deleteContact(id))}
+        onClick={() => deleteContact(id)}
       >
         Delete
       </button>
