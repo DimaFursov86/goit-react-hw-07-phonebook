@@ -5,6 +5,7 @@ import {
   useCreateContactMutation,
 } from "../../redux/app/contactSlice";
 import Loader from "../Loader/Loader";
+import toast, { Toaster } from "react-hot-toast";
 
 export default function Form({ onSubmit }) {
   const [name, setName] = useState("");
@@ -27,7 +28,7 @@ export default function Form({ onSubmit }) {
     }
   };
   const { data: contacts } = useFetchContactsQuery();
-  const [createContact, { isLoading, isSuccess }] = useCreateContactMutation();
+  const [createContact, { isLoading }] = useCreateContactMutation();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -38,9 +39,10 @@ export default function Form({ onSubmit }) {
       );
       const existName = getVcontacts.map((obj) => obj.name);
       if (existName.includes(value)) {
-        alert(`${value} is already in contacts`);
+        toast.error(`${value} is already in contacts`);
       } else {
         createContact(e.currentTarget.elements.name.value);
+        toast.success(`${value} was added`);
       }
     }
 
@@ -75,10 +77,9 @@ export default function Form({ onSubmit }) {
           required
         />
       </label>
-
+      <Toaster />
       <button className={s.formButton} type="submit" disabled={isLoading}>
-        {isLoading && <Loader />}
-        Add contact
+        {isLoading ? <Loader /> : "Add contact"}
       </button>
     </form>
   );

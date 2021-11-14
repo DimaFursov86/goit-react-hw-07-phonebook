@@ -7,7 +7,7 @@ import { getFilter } from "../../redux/app/app-selectors";
 import { useSelector } from "react-redux";
 
 export default function ContactList() {
-  const { data: contacts, isFetching } = useFetchContactsQuery();
+  const { data: contacts } = useFetchContactsQuery();
   const value = useSelector(getFilter);
 
   const getVcontacts =
@@ -23,7 +23,7 @@ export default function ContactList() {
       {contacts &&
         getVcontacts.map(({ id, name, phone }) => (
           <li key={id}>
-            <ContactItem id={id} name={name} number={phone} />
+            <ContactItem id={id} name={name} phone={phone} />
           </li>
         ))}
     </ul>

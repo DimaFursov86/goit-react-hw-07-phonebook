@@ -9,7 +9,7 @@ export default class Loaders extends Component {
         <Loader
           type="ThreeDots"
           color="#00BFFF"
-          height={50}
+          height={18}
           width={50}
           timeout={2000} //2 secs
         />

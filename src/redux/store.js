@@ -29,12 +29,6 @@ export const store = configureStore({
   },
   middleware,
   devTools: process.env.NODE_ENV === "development",
-  // middleware: getDefaultMiddleware => [
-  //   ...getDefaultMiddleware(),
-
-  //   contactApi.middleware,
-
-  // ],
 });
 
 setupListeners(store.dispatch);
