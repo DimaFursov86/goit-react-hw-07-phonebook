@@ -1,7 +1,5 @@
 import s from "./ContactList.module.scss";
 import ContactItem from "../ContactItem";
-// import { useSelector } from "react-redux";
-// import { GetVisibleContacts } from "../../redux/app/app-selectors";
 import { useFetchContactsQuery } from "../../redux/app/contactSlice";
 import { getFilter } from "../../redux/app/app-selectors";
 import { useSelector } from "react-redux";
@@ -16,8 +14,6 @@ export default function ContactList() {
       name.toLowerCase().includes(value.toLowerCase())
     );
 
-  // const vcontacts = useSelector(GetVisibleContacts);
-  console.log(contacts);
   return (
     <ul className={s.contactList}>
       {contacts &&
